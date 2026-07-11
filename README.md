@@ -1,21 +1,21 @@
 # 🔐 GuardianApp — Seguridad de la Información con JWT + 2FA
 
-Segunda aplicación web de seguridad. Usa **JWT** en lugar de sesiones y agrega
+Aplicación web de seguridad. Usa **JWT** en lugar de sesiones y agrega
 **autenticación en dos factores (2FA TOTP)** con códigos de respaldo.
 
 ---
 
 ## 🔑 Diferencias con el proyecto anterior (SecureApp)
 
-| Característica         | SecureApp (proyecto 1) | GuardianApp (proyecto 2) |
-|------------------------|------------------------|--------------------------|
-| Autenticación          | express-session        | JWT (Bearer Token)       |
-| Almacenamiento sesión  | Servidor (memoria)     | Cliente (sessionStorage) |
-| 2FA                    | ❌ No                  | ✅ TOTP (Google Auth)    |
-| Códigos de respaldo    | ❌ No                  | ✅ 8 códigos de un uso   |
-| Puerto                 | 3000                   | 4000                     |
-| BD                     | seguridad_db           | guardian_db              |
-| Tema UI                | Oscuro                 | Claro (light)            |
+| Característica         | GuardianApp (proyecto 2) |
+|------------------------|--------------------------|
+| Autenticación          | JWT (Bearer Token)       |
+| Almacenamiento sesión  | Cliente (sessionStorage) |
+| 2FA                    | ✅ TOTP (Google Auth)    |
+| Códigos de respaldo    | ✅ 8 códigos de un uso   |
+| Puerto                 | 4000                     |
+| BD                     | guardian_db              |
+| Tema UI                | Claro (light)            |
 
 ---
 
