@@ -5,7 +5,7 @@ Aplicación web de seguridad. Usa **JWT** en lugar de sesiones y agrega
 
 ---
 
-## 🔑 Diferencias con el proyecto anterior (SecureApp)
+## 🔑 Resumen del Proyecto
 
 | Característica         | GuardianApp (proyecto 2) |
 |------------------------|--------------------------|
