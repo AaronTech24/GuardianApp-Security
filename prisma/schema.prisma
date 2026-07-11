@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum AuditAction {
+  LOGIN
+  LOGOUT
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  LOGIN_FAILED
+  PERMISSION_DENIED
+  PASSWORD_CHANGE
+  TWOFA_ENABLED
+  TWOFA_DISABLED
+  TWOFA_VERIFIED
+  TWOFA_FAILED
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          Role      @default(VIEWER)
+  isActive      Boolean   @default(true)
+
+  // 2FA (TOTP)
+  twoFAEnabled  Boolean   @default(false)
+  twoFASecret   String?
+  backupCodes   String?   // JSON array of hashed backup codes
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLogin     DateTime?
+
+  records       Record[]
+  auditLogs     AuditLog[]
+
+  @@map("users")
+}
+
+model Record {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  content     String
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+
+  @@map("records")
+}
+
+model AuditLog {
+  id          String      @id @default(uuid())
+  action      AuditAction
+  entity      String?
+  entityId    String?
+  details     String?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime    @default(now())
+
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}
+
+model Asset {
+  id              String   @id @default(uuid())
+  name            String
+  type            String
+  description     String
+  confidentiality String
+  integrity       String
+  availability    String
+  owner           String
+  location        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  risks           Risk[]
+
+  @@map("assets")
+}
+
+model Risk {
+  id             String   @id @default(uuid())
+  name           String
+  description    String
+  probability    Int
+  impact         Int
+  riskLevel      String
+  control        String
+  status         String   @default("Pendiente")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  assetId        String
+  asset          Asset    @relation(fields: [assetId], references: [id])
+
+  @@map("risks")
+}
